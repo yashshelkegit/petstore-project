@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+        }
+
+        @media only screen and (max-width: 600px) {
+            nav ul li {
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
+        
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+        
+            input[type="text"],
+            input[type="number"],
+            input[type="email"],
+            input[type="tel"],
+            select,
+            textarea {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+        
+            input[type="submit"] {
+                background-color: #333;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                width: 200px;
+            }
+        
+            input[type="submit"]:hover {
+                background-color: #555;
+                
+            }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="sell.html">Sell</a></li>
+                <li><a href="petcare.html">Petcare</a></li>
+            </ul>
+        </div>
+    </nav>
+    <header>
+        <div class="container">
+            <h1>Welcome to Our Pet Store</h1>
+            <p>Your one-stop shop for all your pet needs</p>
+        </div>
+    </header>
+    <div class="container">   
+        <body>
+            <div class="container">
+                <h2>Add Pet Details</h2>
+                <form id="petForm">
+                    <label for="name">Pet Name:</label>
+                    <input type="text" id="name" name="name" required>
+        
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" required>
+                        <option value="">Select Type</option>
+                        <option value="Dog">Dog</option>
+                        <option value="Cat">Cat</option>
+                        <option value="Bird">Bird</option>
+                        <option value="Fish">Fish</option>
+                        <option value="other">other</option>
+                    </select>
+        
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required>
+        
+                    <label for="color">Color:</label>
+                    <input type="text" id="color" name="color" required>
+        
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+        
+                    <label for="seller_name">Seller's Name:</label>
+                    <input type="text" id="seller_name" name="seller_name" required>
+        
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+        
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <br><br>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        
+            <script>
+                let pets = [];
+
+                document.getElementById("petForm").addEventListener("submit", function (event) {
+                    event.preventDefault();
+
+                    var name = document.getElementById("name").value;
+                    var type = document.getElementById("type").value;
+                    var age = document.getElementById("age").value;
+                    var color = document.getElementById("color").value;
+                    var description = document.getElementById("description").value;
+                    var sellerName = document.getElementById("seller_name").value;
+                    var email = document.getElementById("email").value;
+                    var phone = document.getElementById("phone").value;
+
+                    var petDetails = {
+                        "name": name,
+                        "type": type,
+                        "age": age,
+                        "color": color,
+                        "description": description,
+                        "sellerName": sellerName,
+                        "email": email,
+                        "phone": phone
+                    };
+                    pets = JSON.parse(localStorage.getItem("pets"));
+                    pets.push(petDetails);
+                    console.log(pets);
+                    
+
+                    // Convert the object to a string and store it in localStorage
+                    localStorage.setItem("pets", JSON.stringify(pets));
+                    console.log(localStorage.getItem("pets"))
+                    document.getElementById("petForm").reset();
+                    
+                    // Alert the user that the data has been stored
+                    alert("Pet details have been saved.");
+                });
+            </script>
+    </div>
+</body>
+
+</html>

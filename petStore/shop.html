@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Pet Store</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				padding: 0;
+				background-color: #f4f4f4;
+			}
+
+			nav {
+				background-color: #333;
+				color: #fff;
+				padding: 15px 20px;
+			}
+
+			nav ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			nav ul li {
+				display: inline;
+				margin-right: 20px;
+			}
+
+			nav ul li a {
+				color: #fff;
+				text-decoration: none;
+			}
+
+			.container {
+				max-width: 1200px;
+				margin: 20px auto;
+				padding: 0 20px;
+			}
+
+			h1 {
+				text-align: center;
+				color: #333;
+			}
+
+			p {
+				text-align: center;
+				color: #666;
+			}
+
+			@media only screen and (max-width: 600px) {
+				nav ul li {
+					display: block;
+					margin-bottom: 10px;
+				}
+			}
+
+			.box-container {
+				display: flex;
+				justify-content: center;
+			}
+
+			.box {
+				display: flex;
+				justify-content: start;
+				flex-wrap: wrap;
+			}
+
+			.card {
+				background-color: #fff;
+				border-radius: 5px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+				margin: 10px;
+				width: 350px;
+				padding: 20px;
+			}
+
+			.card h2 {
+				margin-top: 0;
+				color: #fff;
+				text-align: center;
+				background: #333;
+				padding: 8px;
+				border-radius: 5px;
+			}
+
+			.card p {
+				color: #666;
+				text-align: left;
+			}
+
+			.card {
+				background-color: #fff;
+				border-radius: 8px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				padding: 20px;
+				margin-bottom: 20px;
+			}
+
+			.email {
+				display: block;
+				margin-top: 10px;
+				color: #007bff;
+				text-decoration: none;
+			}
+
+			.btn-container {
+				margin-top: 20px;
+				text-align: center;
+			}
+			.email {
+				background-color: #3591dc;
+				color: #fff;
+				border: none;
+				padding: 8px 16px;
+				border-radius: 5px;
+				cursor: pointer;
+				transition: background-color 0.3s ease;
+			}
+
+			.email:hover {
+				background-color: #c82333;
+			}
+
+			.delete-btn {
+				background-color: #dc3545;
+				color: #fff;
+				border: none;
+				padding: 8px 16px;
+				border-radius: 5px;
+				cursor: pointer;
+				transition: background-color 0.3s ease;
+			}
+
+			.delete-btn:hover {
+				background-color: #c82333;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav>
+			<div class="container">
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="shop.html">Shop</a></li>
+					<li><a href="sell.html">Sell</a></li>
+					<li><a href="petcare.html">Petcare</a></li>
+				</ul>
+			</div>
+		</nav>
+		<header>
+			<div class="container">
+				<h1>Welcome to Our Pet Store</h1>
+				<p>Your one-stop shop for all your pet needs</p>
+			</div>
+		</header>
+		<div class="box-container">
+			<div class="box" id="petContainer">
+				<!-- Cards will be dynamically generated here -->
+				<div class="card">
+					<input type="hidden" value="{{pet.id}}" />
+					<h2>{{pet.name}}</h2>
+					<p>Type: {{pet.type}}</p>
+					<p>Age: {{pet.age}}</p>
+					<p>Color: {{pet.color}}</p>
+					<p>Description: {{pet.description}}</p>
+					<p>Seller's Name: {{pet.sellerName}}</p>
+					<p>Phone: {{pet.phone}}</p>
+					<a href="mailto:{{pet.email}}" class="email">Email: {{pet.email}}</a>
+					<div class="btn-container">
+						<button class="delete-btn">Delete</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var pets = JSON.parse(localStorage.getItem("pets"));
+			// Function to render pet cards
+			function renderPets() {
+				var petContainer = document.getElementById("petContainer");
+				petContainer.innerHTML = ""; // Clear previous cards
+
+				if (pets && pets.length > 0) {
+					pets.forEach(function (pet, index) {
+						var card = document.createElement("div");
+						card.classList.add("card");
+
+						card.innerHTML = `
+                            <h2>${pet.name}</h2>
+                            
+                            <p>Type: ${pet.type}</p>
+                            <p>Age: ${pet.age}</p>
+                            <p>Color: ${pet.color}</p>
+                            <p>Description: ${pet.description}</p>
+                            <p>Seller's Name: ${pet.sellerName}</p>
+                            <p>Phone: ${pet.phone}</p>
+                            <a href="mailto:${pet.email}" class="email">Email: ${pet.email}</a>
+                            `;
+
+						petContainer.appendChild(card);
+					});
+				} else {
+					var message = document.createElement("p");
+					message.textContent = "No pets available";
+					petContainer.appendChild(message);
+				}
+			}
+
+			// Function to delete a pet
+			function deletePet(id) {
+				console.log("Delete pet at index", id);
+				let password = prompt(
+					"Only Admins can delete Pet!!! Enter Password : "
+				);
+				if (password == "admin") {
+					pets = pets.filter(function (pet) {
+						return pet.id !== id;
+					});
+				} else {
+					alert("OOPS!!! Can't delete pet details.");
+				}
+				// localStorage.setItem("pets", JSON.stringify(pets));
+				renderPets();
+			}
+
+			// Initial rendering of pets cards
+			renderPets();
+		</script>
+	</body>
+</html>
